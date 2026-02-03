@@ -1,0 +1,72 @@
+USE sakila;
+#1.1
+SELECT MIN(length) as min_duration, MAX(length) as max_duration
+FROM film;
+#1.2
+SELECT TIME_FORMAT(
+SEC_TO_TIME(
+FLOOR(AVG(length)*60)
+),
+"%H:%i") AS avg_duration
+FROM film;
+
+#2.1
+SELECT DATEDIFF(MAX(rental_date),MIN(rental_date))
+FROM rental;
+
+#2.2
+SELECT *, MONTH(rental_date) AS month, WEEKDAY(rental_date) AS weekday
+FROM rental
+LIMIT 20;
+
+#2.3 
+SELECT *,
+CASE
+	WHEN WEEKDAY(rental_date) >=5 THEN "weekend"
+    ELSE "workday"
+END AS DAY_TYPE
+FROM rental;
+
+#3
+SELECT title, IFNULL(rental_duration,"Not Available")
+FROM film
+ORDER BY title ASC;
+
+#4
+SELECT CONCAT(first_name," ", last_name, " ", LEFT(email,3)) AS first_last_3email
+FROM customer
+ORDER BY last_name ASC;
+
+#1.1
+SELECT COUNT(DISTINCT film_id)
+FROM film;
+
+#1.2
+SELECT rating, COUNT(DISTINCT film_id)
+FROM film
+GROUP BY rating;
+
+#1.3
+SELECT rating, COUNT(DISTINCT film_id)
+FROM film
+GROUP BY rating
+ORDER BY COUNT(DISTINCT film_id) DESC;
+
+#2.1
+SELECT rating, ROUND(AVG(length),2)
+FROM film
+GROUP BY rating
+ORDER BY AVG(length) DESC;
+
+#2.2
+SELECT rating, ROUND(AVG(length),2) as mean_length
+FROM film
+GROUP BY rating
+HAVING mean_length > 120
+ORDER BY AVG(length) DESC;
+
+#3
+SELECT last_name, COUNT(last_name) AS ln_count
+FROM actor
+GROUP BY last_name
+HAVING ln_count = 1;
