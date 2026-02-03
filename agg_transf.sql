@@ -1,7 +1,9 @@
 USE sakila;
+
 #1.1
 SELECT MIN(length) as min_duration, MAX(length) as max_duration
 FROM film;
+
 #1.2
 SELECT TIME_FORMAT(
 SEC_TO_TIME(
@@ -15,15 +17,15 @@ SELECT DATEDIFF(MAX(rental_date),MIN(rental_date))
 FROM rental;
 
 #2.2
-SELECT *, MONTH(rental_date) AS month, WEEKDAY(rental_date) AS weekday
+SELECT *, DATE_FORMAT(MONTH(rental_date), "%M") AS month, DATE_FORMAT(WEEKDAY(rental_date), "%W") AS weekday
 FROM rental
 LIMIT 20;
 
 #2.3 
 SELECT *,
 CASE
-	WHEN WEEKDAY(rental_date) >=5 THEN "weekend"
-    ELSE "workday"
+	WHEN DATE_FORMAT(rental_date, '%W') IN ('Saturday', 'Sunday') THEN 'weekend'
+	ELSE 'workday'
 END AS DAY_TYPE
 FROM rental;
 
@@ -33,12 +35,12 @@ FROM film
 ORDER BY title ASC;
 
 #4
-SELECT CONCAT(first_name," ", last_name, " ", LEFT(email,3)) AS first_last_3email
+SELECT CONCAT(first_name, ' ', last_name) AS full_name, SUBSTRING(email, 1, 3) AS email_prefix
 FROM customer
 ORDER BY last_name ASC;
 
 #1.1
-SELECT COUNT(DISTINCT film_id)
+SELECT COUNT(*) AS num_films
 FROM film;
 
 #1.2
