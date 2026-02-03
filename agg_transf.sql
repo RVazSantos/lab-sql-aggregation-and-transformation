@@ -1,15 +1,11 @@
 USE sakila;
 
 #1.1
-SELECT MIN(length) as min_duration, MAX(length) as max_duration
+SELECT MAX(rental_duration) AS max_duration, MIN(rental_duration) AS min_duration
 FROM film;
 
 #1.2
-SELECT TIME_FORMAT(
-SEC_TO_TIME(
-FLOOR(AVG(length)*60)
-),
-"%H:%i") AS avg_duration
+SELECT FLOOR(AVG(length) / 60) AS hours, ROUND(AVG(length) % 60) AS minutes
 FROM film;
 
 #2.1
